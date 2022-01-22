@@ -1,0 +1,176 @@
+{
+  "version": 2,
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
+  "defaultProject": "broker-frontend",
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "scss",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint"
+      }
+    }
+  },
+  "projects": {
+    "broker-frontend": {
+      "root": "apps/broker-frontend",
+      "sourceRoot": "apps/broker-frontend/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/broker-frontend",
+            "index": "apps/broker-frontend/src/index.html",
+            "main": "apps/broker-frontend/src/main.tsx",
+            "polyfills": "apps/broker-frontend/src/polyfills.ts",
+            "tsConfig": "apps/broker-frontend/tsconfig.app.json",
+            "assets": [
+              "apps/broker-frontend/src/favicon.ico",
+              "apps/broker-frontend/src/assets"
+            ],
+            "styles": ["apps/broker-frontend/src/styles.scss"],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/broker-frontend/src/environments/environment.ts",
+                  "with": "apps/broker-frontend/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "broker-frontend:build",
+            "proxyConfig": "apps/broker-frontend/proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "broker-frontend:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/broker-frontend/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/broker-frontend"],
+          "options": {
+            "jestConfig": "apps/broker-frontend/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "broker-frontend-e2e": {
+      "root": "apps/broker-frontend-e2e",
+      "sourceRoot": "apps/broker-frontend-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/broker-frontend-e2e/cypress.json",
+            "tsConfig": "apps/broker-frontend-e2e/tsconfig.e2e.json",
+            "devServerTarget": "broker-frontend:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "broker-frontend:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/broker-frontend-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "broker-backend": {
+      "root": "apps/broker-backend",
+      "sourceRoot": "apps/broker-backend/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/broker-backend",
+            "main": "apps/broker-backend/src/main.ts",
+            "tsConfig": "apps/broker-backend/tsconfig.app.json",
+            "assets": ["apps/broker-backend/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/broker-backend/src/environments/environment.ts",
+                  "with": "apps/broker-backend/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "broker-backend:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/broker-backend/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/broker-backend"],
+          "options": {
+            "jestConfig": "apps/broker-backend/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  }
+}
